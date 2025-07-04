@@ -1,0 +1,9 @@
+__pycache__/
+**/__pycache__/
+*.pyc
+*.log
+.env
+.vscode/
+.idea/
+.pytest_cache/
+chromedriver
