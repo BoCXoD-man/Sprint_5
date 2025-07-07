@@ -34,4 +34,11 @@ class HeaderLocators:
     BUN_TAB = (By.XPATH, "//span[text()='Булки']") # Вкладка "Булки"
     SAUCE_TAB = (By.XPATH, "//span[text()='Соусы']") # Вкладка "Соусы"
     FILLING_TAB = (By.XPATH, "//span[text()='Начинки']") # Вкладка "Начинки"
-    ACTIVE_TAB = (By.XPATH, "//div[contains(@class, 'tab_tab_type_current')]") # Активная вкладка конструктора
+    # ACTIVE_TAB = (By.XPATH, "//div[contains(@class, 'tab_tab') and contains(@class, 'tab_tab_type_current')]") # Активная вкладка конструктора
+    TAB = (By.XPATH, "//div[contains(@class, 'tab_tab')]")  # Общий локатор всех вкладок
+    ACTIVE_TAB = (By.XPATH, "//div[contains(@class, 'tab_tab_type_current')]")
+
+    # Активные элементы конструктора
+    ACTIVE_BUN_TAB = (By.XPATH, "//div[contains(@class, 'tab_tab_type_current') and contains(text(), 'Булки')]")
+    ACTIVE_SAUCE_TAB = (By.XPATH, "//div[contains(@class, 'tab_tab_type_current') and contains(text(), 'Соусы')]")
+    ACTIVE_FILLING_TAB = (By.XPATH, "//div[contains(@class, 'tab_tab_type_current') and contains(text(), 'Начинки')]")

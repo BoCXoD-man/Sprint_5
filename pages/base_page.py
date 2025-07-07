@@ -1,5 +1,8 @@
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
+from locators import HeaderLocators
+from selenium.common.exceptions import TimeoutException
 
 class BasePage:
     """
@@ -78,3 +81,40 @@ class BasePage:
         Returns:
             str: текущий URL страницы"""
         return self.driver.current_url
+
+
+    def wait_for_tab_to_be_active(self, tab_text, timeout=10):
+        """
+        Явно ждёт, пока вкладка с нужным текстом станет активной.
+        
+        Args:
+            tab_text (str): текст вкладки ("Булки", "Соусы", "Начинки")
+            timeout (int): время ожидания в секундах
+        """
+        
+        try:
+            WebDriverWait(self.driver, timeout).until(
+                lambda d: any(
+                    tab_text in el.text and 
+                    'tab_tab_type_current' in el.get_attribute("class")
+                    for el in d.find_elements(*HeaderLocators.TAB)
+                ),
+                message=f"Вкладка '{tab_text}' не стала активной за {timeout} секунд"
+            )
+            return True
+        except TimeoutException:
+            return False
+
+    def switch_and_verify_tab(self, tab_locator, expected_text):
+        """
+        Кликает на вкладку и проверяет, что она стала активной
+        
+        Args:
+            tab_locator: локатор вкладки
+            expected_text: ожидаемый текст активной вкладки
+        """
+        self.click(tab_locator)
+        assert self.wait_for_tab_to_be_active(expected_text), \
+            f"Вкладка '{expected_text}' не активировалась"
+        assert expected_text in self.get_text(HeaderLocators.ACTIVE_TAB), \
+            f"Текст активной вкладки не соответствует '{expected_text}'"
